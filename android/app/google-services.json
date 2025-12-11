@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "549084854148",
+    "project_id": "flutter-order-management-121fb",
+    "storage_bucket": "flutter-order-management-121fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549084854148:android:e9dbd6947d61c910bf8fd1",
+        "android_client_info": {
+          "package_name": "com.example.ordermanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBN3iklqg728kLcWOQOnB-YJfPD9ciLAM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
