@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:ordermanagement/data/repositories/auth_repository.dart';
+import 'package:ordermanagement/utils/helpers/loaders.dart';
 import 'package:ordermanagement/utils/routes/app_routes.dart';
 
 class AuthController extends GetxController{
@@ -17,9 +19,18 @@ class AuthController extends GetxController{
       if (user != null) {
         Get.offAllNamed(Routes.home);
       }
+
+    } on FirebaseAuthException catch (e) {
+      Loaders.errorSnackBar(
+        title: "Login Error",
+        message: e.message ?? "Something went wrong",
+      );
+
     } catch (e) {
-      error.value = e.toString();
-      Get.snackbar("Login Error", error.value);
+      Loaders.errorSnackBar(
+        title: "Error",
+        message: "Something went wrong",
+      );
     } finally {
       isLoading.value = false;
     }
@@ -32,11 +43,25 @@ class AuthController extends GetxController{
       final user = await repo.register(email, password);
 
       if (user != null) {
-        Get.offAllNamed('/orders');
+        Loaders.successSnackBar(
+            title: "Success",
+            message: "Registration Successful"
+        );
+        Get.offAllNamed(Routes.home);
       }
+
+    } on FirebaseAuthException catch (e) {
+      Loaders.errorSnackBar(
+          title: "Registration Error",
+          message: e.message ?? "Something went wrong"
+      );
+
     } catch (e) {
-      error.value = e.toString();
-      Get.snackbar("Registration Error", error.value);
+      Loaders.errorSnackBar(
+          title: "Error",
+          message: "Unexpected error occurred"
+      );
+
     } finally {
       isLoading.value = false;
     }

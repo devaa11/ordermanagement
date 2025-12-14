@@ -39,6 +39,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   get: ^4.7.3
   firebase_auth: ^6.1.2
+  iconsax: ^0.0.8
 
 dev_dependencies:
   flutter_test:

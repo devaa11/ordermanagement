@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,9 @@ import 'package:ordermanagement/firebase_options.dart';
 import 'package:ordermanagement/modules/auth/login/login_screen.dart';
 import 'package:ordermanagement/utils/routes/app_pages.dart';
 import 'package:ordermanagement/utils/theme/theme.dart';
+
+import 'modules/Home/home_screen.dart';
+import 'modules/Splash/splash_screen.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +34,19 @@ class MyApp extends StatelessWidget {
           darkTheme: CustomAppTheme.darkTheme,
           getPages: AppPages.routes,
 
-          home: LoginScreen(),
+          home: StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return SplashScreen();
+              }
+              if (snapshot.hasData) {
+                return HomeScreen();
+              }
+              return LoginScreen();
+            },
+          )
+          ,
         );
     },
     );

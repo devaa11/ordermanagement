@@ -15,17 +15,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final AuthController _authController=Get.put(AuthController());
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final _loginformKey = GlobalKey<FormState>();
+    final AuthController _authController=Get.put(AuthController());
+    final TextEditingController _emailController = TextEditingController();
+    final TextEditingController _passwordController = TextEditingController();
+    final _loginformKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: AppSpacingStyles.paddingWithAppBarHeight,
-        child: SingleChildScrollView(
+        child: SingleChildScrollView  (
           child: Center(
             child: Form(
               key: _loginformKey,

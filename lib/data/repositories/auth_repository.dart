@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../services/auth_services.dart';
 
 class AuthRepository {
@@ -8,16 +7,20 @@ class AuthRepository {
   Future<User?> login(String email, String password) async {
     try {
       return await service.login(email, password);
+    } on FirebaseAuthException catch (e) {
+      rethrow;
     } catch (e) {
-      throw "Login failed: $e";
+      rethrow;
     }
   }
 
   Future<User?> register(String email, String password) async {
     try {
       return await service.register(email, password);
+    } on FirebaseAuthException catch (e) {
+      rethrow;
     } catch (e) {
-      throw "Registration failed: $e";
+      rethrow;
     }
   }
 
