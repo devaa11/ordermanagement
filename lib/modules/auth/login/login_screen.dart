@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ordermanagement/modules/auth/auth_controller.dart';
+import 'package:ordermanagement/utils/constants/colors.dart';
 import 'package:ordermanagement/utils/constants/sizes.dart';
 import 'package:ordermanagement/utils/constants/spacing_styles.dart';
+import 'package:ordermanagement/utils/routes/app_routes.dart';
 import 'package:ordermanagement/utils/theme/text_theme.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -95,12 +97,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: ElevatedButton(
                         onPressed: (){
                           if(_loginformKey.currentState!.validate()){
-
+                            final email=_emailController.text.trim();
+                            final pass=_passwordController.text.trim();
+                            _authController.login(email,pass);
                           }
 
                         },
                         child: Text("Login")),
-                  )
+                  ),
+
+                  SizedBox(height: AppSizes.spaceBtwSections,),
+
+                  Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't have an account?",style: Theme.of(context).textTheme.bodyLarge,),
+                      TextButton(onPressed: (){
+                        Get.toNamed(Routes.signup);
+                      },
+                          child: Text("Sign up",style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: AppColors.buttonPrimary.withAlpha(200)
+                          )))
+                    ],
+                  )),
               
               
                 ],
