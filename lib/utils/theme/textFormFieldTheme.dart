@@ -45,6 +45,7 @@ class AppTextFormFieldTheme {
   );
 
   static final InputDecorationTheme darkInputDecorationTheme = InputDecorationTheme(
+
     errorMaxLines: 2,
     prefixIconColor: AppColors.darkGrey,
     suffixIconColor: AppColors.darkGrey,
