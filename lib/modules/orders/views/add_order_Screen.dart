@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+
+import '../controllers/order_controller.dart';
 
 class AddOrderScreen extends StatefulWidget {
   const AddOrderScreen({super.key});
@@ -13,6 +18,8 @@ class _AddOrderPageState extends State<AddOrderScreen> {
   final _customerNameController = TextEditingController();
   final _amountController = TextEditingController();
   final _itemsController = TextEditingController();
+  final OrdersController orderCtrl = Get.put(OrdersController());
+
 
   String _selectedStatus = 'Pending';
   DateTime _selectedDate = DateTime.now();
@@ -42,18 +49,24 @@ class _AddOrderPageState extends State<AddOrderScreen> {
     }
   }
 
-  void _saveOrder() {
+  void _saveOrder() async {
     if (_formKey.currentState!.validate()) {
-      // Save order logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Order created successfully!'),
-          backgroundColor: Colors.green,
-        ),
+      final ctrl = Get.find<OrdersController>();
+
+      final isSuccess = await ctrl.addOrder(
+        customerName: _customerNameController.text,
+        items: int.parse(_itemsController.text),
+        amount: double.parse(_amountController.text),
+        status: _selectedStatus,
+        date: _selectedDate,
       );
-      Navigator.pop(context);
+
+      if (isSuccess) {
+        Navigator.pop(context);
+      }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,20 +90,29 @@ class _AddOrderPageState extends State<AddOrderScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildSectionTitle('Order Information'),
-                const SizedBox(height: 16),
-                buildTextField(
-                  controller: _orderIdController,
-                  label: 'Order ID',
-                  hint: 'Enter order ID (e.g., ORD1001)',
-                  icon: Icons.tag,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter order ID';
-                    }
-                    return null;
-                  },
-                ),
+
+
+                buildSectionTitle('Order Details'),
+                const SizedBox(height: 24),
+
+                Obx(() {
+                  return TextFormField(
+                    readOnly: true,
+                    controller: TextEditingController(
+                      text: orderCtrl.nextOrderId.value,
+                    ),
+                    decoration: InputDecoration(
+                      labelText: 'Order ID',
+                      prefixIcon: Icon(Icons.tag, color: Colors.blue),
+                      filled: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  );
+                }),
+
                 const SizedBox(height: 16),
 
                 buildTextField(
@@ -105,9 +127,6 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
-
-                buildSectionTitle('Order Details'),
                 const SizedBox(height: 16),
 
                 buildStatusDropdown(),
@@ -152,28 +171,32 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                 ),
                 const SizedBox(height: 32),
 
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: _saveOrder,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                Obx((){
+                  return SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: orderCtrl.isSaving.value ? null : _saveOrder,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      child:  orderCtrl.isSaving.value
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : Text(
+                        'Create Order',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      'Create Order',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+                  );
+                }),
                 const SizedBox(height: 20),
               ],
             ),
