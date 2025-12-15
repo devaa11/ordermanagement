@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
           await orderCtrl.loadOrders();
         },
         child: ListView.builder(
-          physics: const BouncingScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: const EdgeInsets.all(16),
           itemCount: orderCtrl.orders.length,
           itemBuilder: (context, index) {
@@ -101,7 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Get.toNamed(Routes.orderdetails,arguments: order);
+          },
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.all(16),

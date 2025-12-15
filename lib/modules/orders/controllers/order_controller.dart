@@ -10,6 +10,10 @@ class OrdersController extends GetxController {
   var isLoading = false.obs;
   var nextOrderId = "".obs;
   var isSaving = false.obs;
+  var selectedStatus = "".obs;
+  var selectedDate = DateTime.now().obs;
+  var isEditing = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -48,41 +52,50 @@ class OrdersController extends GetxController {
       );
 
       final newOrder = await repo.createOrder(order);
-
       orders.add(newOrder);
+
       await generateOrderId();
 
-      Loaders.successSnackBar(title: "Success",message: "Order created");
-
-      return true; // 👈 UI will know add success
+      Loaders.successSnackBar(title: "Success", message: "Order created");
+      return true;
     } catch (e) {
-      Loaders.errorSnackBar(title: "Error");
+      Loaders.errorSnackBar(title: "Error", message: e.toString());
       return false;
     } finally {
       isSaving.value = false;
     }
   }
 
-  Future<void> deleteOrder(String id) async {
-    await repo.deleteOrder(id);
-    orders.removeWhere((o) => o.id == id);
+  Future<bool> deleteOrder(String id) async {
+    try {
+      await repo.deleteOrder(id);
+      orders.removeWhere((o) => o.id == id);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future<void> updateOrder(String id, Map<String, dynamic> data) async {
-    await repo.updateOrder(id, data);
+  Future<bool> updateOrder(String id, Map<String, dynamic> data) async {
+    try {
+      await repo.updateOrder(id, data);
 
-    int index = orders.indexWhere((o) => o.id == id);
-    if (index != -1) {
-      final old = orders[index];
-      orders[index] = OrderModel(
-        id: id,
-        orderId: old.orderId,
-        customerName: data["customerName"] ?? old.customerName,
-        items: data["items"] ?? old.items,
-        amount: data["amount"] ?? old.amount,
-        status: data["status"] ?? old.status,
-        date: data["date"] ?? old.date,
-      );
+      int index = orders.indexWhere((o) => o.id == id);
+      if (index != -1) {
+        final old = orders[index];
+        orders[index] = OrderModel(
+          id: id,
+          orderId: old.orderId,
+          customerName: data["customerName"] ?? old.customerName,
+          items: data["items"] ?? old.items,
+          amount: data["amount"] ?? old.amount,
+          status: data["status"] ?? old.status,
+          date: DateTime.parse(data["date"] ?? old.date.toIso8601String()),
+        );
+      }
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 }
