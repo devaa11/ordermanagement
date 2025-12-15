@@ -13,6 +13,12 @@ class OrdersController extends GetxController {
   var selectedStatus = "".obs;
   var selectedDate = DateTime.now().obs;
   var isEditing = false.obs;
+  var searchQuery = "".obs;
+  var selectedStatuses = <String>[].obs;
+  var minAmount = 0.0.obs;
+  var maxAmount = 999999.0.obs;
+  var startDate = Rxn<DateTime>();
+  var endDate = Rxn<DateTime>();
 
   @override
   void onInit() {
@@ -23,6 +29,7 @@ class OrdersController extends GetxController {
 
   Future<void> loadOrders() async {
     isLoading.value = true;
+    resetFilters();
     orders.value = await repo.getOrders();
     isLoading.value = false;
   }
@@ -98,4 +105,44 @@ class OrdersController extends GetxController {
       return false;
     }
   }
+
+  List<OrderModel> get filteredOrders {
+    List<OrderModel> temp = orders;
+
+    if (searchQuery.value.isNotEmpty) {
+      final q = searchQuery.value.toLowerCase();
+      temp = temp.where((o) =>
+      o.customerName.toLowerCase().contains(q) ||
+          o.orderId.toLowerCase().contains(q) ||
+          o.status.toLowerCase().contains(q)
+      ).toList();
+    }
+
+    if (selectedStatuses.isNotEmpty) {
+      temp = temp.where((o) => selectedStatuses.contains(o.status)).toList();
+    }
+
+    temp = temp.where((o) =>
+    o.amount >= minAmount.value &&
+        o.amount <= maxAmount.value).toList();
+
+    if (startDate.value != null && endDate.value != null) {
+      temp = temp.where((o) =>
+      o.date.isAfter(startDate.value!) &&
+          o.date.isBefore(endDate.value!)).toList();
+    }
+
+    return temp;
+  }
+
+  void resetFilters() {
+    searchQuery.value = "";
+    selectedStatuses.clear();
+    minAmount.value = 0.0;
+    maxAmount.value = 999999.0;
+    startDate.value = null;
+    endDate.value = null;
+  }
+
+
 }

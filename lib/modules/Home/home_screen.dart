@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../data/models/orderModel.dart';
 import '../../utils/routes/app_routes.dart';
 import '../orders/controllers/order_controller.dart';
+import '../orders/widgets/order_filtersheet.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,44 +43,81 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(
+            icon: const Icon(Icons.filter_alt, color: Colors.blue, size: 28),
             onPressed: () {
-              Get.toNamed(Routes.addOrders);
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                ),
+                builder: (_) => OrderFilterSheet(),
+              );
             },
-            icon: const Icon(Icons.add_circle, color: Colors.blue, size: 28),
           ),
-          const SizedBox(width: 8),
+          IconButton(
+            icon: const Icon(Icons.add_circle, color: Colors.blue, size: 28),
+            onPressed: () => Get.toNamed(Routes.addOrders),
+          ),
         ],
       ),
-     body: Obx(() {
-      if (orderCtrl.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      }
+      body: Obx(() {
+        if (orderCtrl.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-      if (orderCtrl.orders.isEmpty) {
-        return const Center(
-          child: Text(
-            "No orders found",
-            style: TextStyle(fontSize: 16),
-          ),
+        return Column(
+          children: [
+            // 🔍 SEARCH BAR
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Search orders...",
+                  prefixIcon: const Icon(Icons.search),
+                  filled: true,
+                  fillColor: Theme.of(context).cardColor,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                onChanged: (value) {
+                  orderCtrl.searchQuery.value = value;
+                },
+              ),
+            ),
+
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: () async => await orderCtrl.loadOrders(),
+                child: Obx(() {
+                  final list = orderCtrl.filteredOrders;
+
+                  if (list.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No matching orders",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }
+
+                  return ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: const EdgeInsets.all(16),
+                    itemCount: list.length,
+                    itemBuilder: (context, index) {
+                      final order = list[index];
+                      return _buildOrderCard(order, context);
+                    },
+                  );
+                }),
+              ),
+            )
+          ],
         );
-      }
-
-      return RefreshIndicator(
-        onRefresh: () async {
-          await orderCtrl.loadOrders();
-        },
-        child: ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16),
-          itemCount: orderCtrl.orders.length,
-          itemBuilder: (context, index) {
-            final order = orderCtrl.orders[index];
-            return _buildOrderCard(order, context);
-          },
-        ),
-      );
-
-     }),
+      }),
     );
   }
   Widget _buildOrderCard(OrderModel order, BuildContext context) {
