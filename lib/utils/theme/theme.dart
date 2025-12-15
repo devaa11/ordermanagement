@@ -49,6 +49,6 @@ class CustomAppTheme {
     elevatedButtonTheme: AppElevatedButtonTheme.darkElevatedButtonTheme,
     outlinedButtonTheme: AppOutlinedButtonTheme.darkOutlinedButtonTheme,
     inputDecorationTheme: AppTextFormFieldTheme.darkInputDecorationTheme,
-    cardColor: AppColors.black.withOpacity(0.8),
+    cardColor: const Color(0xFF1E1E1E),
   );
 }
