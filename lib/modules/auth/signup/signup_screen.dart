@@ -152,20 +152,23 @@ class _SignupScreenState extends State<SignupScreen> {
                   }),
 
                   SizedBox(height: AppSizes.spaceBtwSections),
+                  Obx((){
+                    return  SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          onPressed: (){
+                            if(_signupformKey.currentState!.validate()){
+                              final email=_emailController.text.trim();
+                              final pass=_passwordController.text.trim();
+                              _authController.register(email,pass);
+                            }
 
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: (){
-                          if(_signupformKey.currentState!.validate()){
-                            final email=_emailController.text.trim();
-                            final pass=_passwordController.text.trim();
-                            _authController.register(email,pass);
-                          }
+                          },
+                          child: _authController.isLoading.value? CircularProgressIndicator(): Text("Create Account")),
+                    );
 
-                        },
-                        child: Text("Create Account")),
-                  ),
+                  }),
+
 
                   SizedBox(height: AppSizes.spaceBtwSections,),
 

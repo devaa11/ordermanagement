@@ -91,20 +91,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   }),
               
                   SizedBox(height: AppSizes.spaceBtwSections),
-              
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                        onPressed: (){
-                          if(_loginformKey.currentState!.validate()){
-                            final email=_emailController.text.trim();
-                            final pass=_passwordController.text.trim();
-                            _authController.login(email,pass);
-                          }
 
-                        },
-                        child: Text("Login")),
-                  ),
+                  Obx((){
+                    return  SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                          onPressed: (){
+                            if(_loginformKey.currentState!.validate()){
+                              final email=_emailController.text.trim();
+                              final pass=_passwordController.text.trim();
+                              _authController.login(email,pass);
+                            }
+
+                          },
+                          child: _authController.isLoading.value? CircularProgressIndicator(): Text("Login")),
+                    );
+
+                  }),
+              
 
                   SizedBox(height: AppSizes.spaceBtwSections,),
 

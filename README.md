@@ -43,6 +43,8 @@ This is a Flutter-based Order Management application that allows users to manage
 - User stays logged in using Firebase authentication persistence.
 - Internet connection is required for authentication.
 - UI is made responsive using `flutter_screenutil`.
+- iOS build not included. App tested on Android devices and emulators.
+
 
 ---
 
