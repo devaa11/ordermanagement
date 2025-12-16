@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../controllers/order_controller.dart';
 
@@ -19,9 +20,9 @@ class OrderFilterSheet extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+        borderRadius:  BorderRadius.only(
+          topLeft: Radius.circular(24.r),
+          topRight: Radius.circular(24.r),
         ),
       ),
       child: Column(
@@ -29,39 +30,39 @@ class OrderFilterSheet extends StatelessWidget {
         children: [
           Flexible(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding:  EdgeInsets.all(20.r),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(8),
+                        padding:  EdgeInsets.all(8.r),
                         decoration: BoxDecoration(
                           color: Colors.blue.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(
+                        child:  Icon(
                           Icons.filter_list,
                           color: Colors.blue,
-                          size: 24,
+                          size: 24.sp,
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      const Text(
+                       SizedBox(width: 12.w),
+                       Text(
                         "Filter Orders",
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 22.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                   SizedBox(height: 24.h),
 
                   _buildSectionTitle("Status"),
-                  const SizedBox(height: 12),
+                   SizedBox(height: 12.h),
                   Obx(() => Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -85,9 +86,9 @@ class OrderFilterSheet extends StatelessWidget {
                               ? Colors.blue
                               : Colors.grey.shade300,
                         ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
+                        padding:  EdgeInsets.symmetric(
+                          horizontal: 12.w,
+                          vertical: 8.h,
                         ),
                         onSelected: (_) {
                           if (isSelected) {
@@ -100,10 +101,10 @@ class OrderFilterSheet extends StatelessWidget {
                     }).toList(),
                   )),
 
-                  const SizedBox(height: 24),
+                   SizedBox(height: 24.h),
 
                   _buildSectionTitle("Amount Range"),
-                  const SizedBox(height: 16),
+                   SizedBox(height: 16.h),
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -155,20 +156,20 @@ class OrderFilterSheet extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                   SizedBox(height: 32.h),
 
                   _buildSectionTitle("Order Date Range"),
-                  const SizedBox(height: 12),
+                   SizedBox(height: 12.h),
 
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding:  EdgeInsets.all(16.r),
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
+                          blurRadius: 10.r,
                           offset: const Offset(0, 2),
                         ),
                       ],
@@ -200,8 +201,8 @@ class OrderFilterSheet extends StatelessWidget {
                         )),
 
                         Container(
-                          width: 40,
-                          height: 2,
+                          width: 40.w,
+                          height: 2.h,
                           color: Colors.grey[300],
                         ),
 
@@ -237,7 +238,7 @@ class OrderFilterSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                   SizedBox(height: 24.h),
 
                   Row(
                     children: [
@@ -251,22 +252,22 @@ class OrderFilterSheet extends StatelessWidget {
                             orderCtrl.endDate.value = null;
                           },
                           style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding:  EdgeInsets.symmetric(vertical: 16.h),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             side: BorderSide(color: Colors.grey.shade300),
                           ),
-                          child: const Text(
+                          child:  Text(
                             "Reset",
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                       SizedBox(width: 12.w),
                       Expanded(
                         flex: 2,
                         child: ElevatedButton(
@@ -274,16 +275,16 @@ class OrderFilterSheet extends StatelessWidget {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding:  EdgeInsets.symmetric(vertical: 16.h),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                             ),
                             elevation: 0,
                           ),
-                          child: const Text(
+                          child:  Text(
                             "Apply Filters",
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -292,7 +293,7 @@ class OrderFilterSheet extends StatelessWidget {
                     ],
                   ),
 
-                  const SizedBox(height: 8),
+                   SizedBox(height: 8.h),
 
 
                 ],
@@ -307,8 +308,8 @@ class OrderFilterSheet extends StatelessWidget {
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(
-        fontSize: 16,
+      style:  TextStyle(
+        fontSize: 16.sp,
         fontWeight: FontWeight.bold,
       ),
     );
@@ -325,19 +326,19 @@ class OrderFilterSheet extends StatelessWidget {
         children: [
           Text(label,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 12.sp,
                 color: Colors.grey[600],
                 fontWeight: FontWeight.w500,
               )),
-          const SizedBox(height: 6),
+           SizedBox(height: 6.h),
           Row(
             children: [
-              const Icon(Icons.calendar_today, size: 18, color: Colors.blue),
-              const SizedBox(width: 6),
+               Icon(Icons.calendar_today, size: 18.sp, color: Colors.blue),
+               SizedBox(width: 6.h),
               Text(
                 value,
-                style: const TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.bold),
+                style:  TextStyle(
+                    fontSize: 16.sp, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -353,16 +354,16 @@ class OrderFilterSheet extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 12,
+            fontSize: 12.sp,
             color: Colors.grey[600],
             fontWeight: FontWeight.w500,
           ),
         ),
-        const SizedBox(height: 4),
+         SizedBox(height: 4.h),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 18,
+          style:  TextStyle(
+            fontSize: 18.sp,
             fontWeight: FontWeight.bold,
             color: Colors.blue,
           ),

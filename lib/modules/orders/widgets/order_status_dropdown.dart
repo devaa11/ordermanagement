@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OrderStatusDropdown extends StatelessWidget {
   final String value;
@@ -36,11 +37,11 @@ class OrderStatusDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
+            blurRadius: 10.r,
             offset: const Offset(0, 2),
           ),
         ],
@@ -51,12 +52,12 @@ class OrderStatusDropdown extends StatelessWidget {
           labelText: 'Order Status',
           prefixIcon: const Icon(Icons.info_outline, color: Colors.blue),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             borderSide: BorderSide.none,
           ),
           filled: true,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+           EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
         ),
         items: _statusOptions.map((String status) {
           return DropdownMenuItem<String>(
@@ -64,14 +65,14 @@ class OrderStatusDropdown extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 12,
-                  height: 12,
+                  width: 12.w,
+                  height: 12.h,
                   decoration: BoxDecoration(
                     color: _getStatusColor(status),
                     shape: BoxShape.circle,
                   ),
                 ),
-                const SizedBox(width: 12),
+                 SizedBox(width: 12.w),
                 Text(status),
               ],
             ),

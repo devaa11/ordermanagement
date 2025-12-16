@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
@@ -33,17 +34,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text(
+        title:  Text(
           "Orders",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 24.sp,
           ),
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.filter_alt, color: Colors.blue, size: 28),
+            icon: Icon(Icons.filter_alt, color: Colors.blue, size: 28.sp),
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -56,7 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.add_circle, color: Colors.blue, size: 28),
+            icon: Icon(Icons.add_circle, color: Colors.blue, size: 28.sp),
+
             onPressed: () => Get.toNamed(Routes.addOrders),
           ),
         ],
@@ -68,17 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
         return Column(
           children: [
-            // 🔍 SEARCH BAR
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 8.h),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: "Search orders...",
-                  prefixIcon: const Icon(Icons.search),
+                  prefixIcon: Icon(Icons.search, size: 20.sp),
                   filled: true,
                   fillColor: Theme.of(context).cardColor,
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                     borderSide: BorderSide.none,
                   ),
                 ),
@@ -105,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   return ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16.w),
                     itemCount: list.length,
                     itemBuilder: (context, index) {
                       final order = list[index];
@@ -124,15 +125,15 @@ class _HomeScreenState extends State<HomeScreen> {
     final status = order.status;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: 10.r,
+            offset: Offset(0, 4.h),
           ),
         ],
       ),
@@ -144,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           borderRadius: BorderRadius.circular(16),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -155,27 +156,24 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         Container(
                           padding: const EdgeInsets.all(10),
-                          child: const Icon(
-                            Icons.receipt_long,
-                            color: Colors.blue,
-                            size: 24,
-                          ),
+                          child: Icon(Icons.receipt_long, color: Colors.blue, size: 24.sp),
+
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12.w),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               order.orderId,
-                              style: const TextStyle(
-                                fontSize: 16,
+                              style: TextStyle(
+                                fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4.h),
                             Text(
                               "${order.date.day} ${_getMonth(order.date.month)} ${order.date.year}",
-                              style: const TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
                           ],
                         ),
@@ -183,16 +181,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
 
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                       decoration: BoxDecoration(
                         color: _getStatusColor(status).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(20.r),
                       ),
                       child: Text(
                         status,
                         style: TextStyle(
                           color: _getStatusColor(status),
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -200,40 +198,40 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
 
-                const SizedBox(height: 16),
-                Divider(color: Colors.grey[300], height: 1),
-                const SizedBox(height: 16),
+                 SizedBox(height: 16.h),
+                Divider(color: Colors.grey[300], height: 1.h),
+                 SizedBox(height: 16.h),
 
                 Row(
                   children: [
-                    const Icon(Icons.person_outline, size: 18),
-                    const SizedBox(width: 8),
+                     Icon(Icons.person_outline, size: 18.sp),
+                     SizedBox(width: 8.w),
                     Text(
                       order.customerName,
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style:  TextStyle(
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 12),
+                 SizedBox(height: 12.h),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.shopping_bag_outlined, size: 18),
-                        const SizedBox(width: 8),
+                         Icon(Icons.shopping_bag_outlined, size: 18.sp),
+                         SizedBox(width: 8.w),
                         Text("${order.items} items"),
                       ],
                     ),
                     Text(
                       "₹${order.amount.toStringAsFixed(2)}",
-                      style: const TextStyle(
-                        fontSize: 20,
+                      style:  TextStyle(
+                        fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue,
                       ),

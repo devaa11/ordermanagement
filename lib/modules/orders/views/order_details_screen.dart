@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../data/models/orderModel.dart';
 import '../controllers/order_controller.dart';
@@ -29,78 +30,84 @@ class OrderDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Obx(() => Text(
-          orderCtrl.isEditing.value ? "Edit Order" : "Order Details",
-          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        )),
         centerTitle: true,
+        title: Obx(
+              () => Text(
+            orderCtrl.isEditing.value ? "Edit Order" : "Order Details",
+            style: TextStyle(
+              fontSize: 22.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
 
       body: Obx(
             () => SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.all(20.w),
           child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _sectionTitle("Order Information"),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _sectionTitle("Order Information"),
+              SizedBox(height: 16.h),
 
-                const SizedBox(height: 16),
+              _displayField(
+                icon: Icons.tag,
+                label: "Order ID",
+                value: order.orderId,
+              ),
 
-                _displayField(
-                    icon: Icons.tag,
-                    label: "Order ID",
-                    value: order.orderId),
+              SizedBox(height: 28.h),
+              _sectionTitle("Order Details"),
+              SizedBox(height: 16.h),
 
-                const SizedBox(height: 16),
+              _statusField(),
+              SizedBox(height: 16.h),
 
-                _inputField(
-                    label: "Customer Name",
-                    icon: Icons.person_outline,
-                    controller: customerNameController,
-                    enabled: orderCtrl.isEditing.value),
+              _dateField(context),
+              SizedBox(height: 16.h),
 
-                const SizedBox(height: 28),
-                _sectionTitle("Order Details"),
-                const SizedBox(height: 16),
+              _inputField(
+                label: "Customer Name",
+                icon: Icons.person_outline,
+                controller: customerNameController,
+                enabled: orderCtrl.isEditing.value,
+              ),
 
-                _statusField(),
-                const SizedBox(height: 16),
+              SizedBox(height: 16.h),
 
-                _dateField(context),
-                const SizedBox(height: 16),
+              _inputField(
+                label: "Number of Items",
+                icon: Icons.shopping_bag_outlined,
+                controller: itemsController,
+                enabled: orderCtrl.isEditing.value,
+                keyboardType: TextInputType.number,
+              ),
 
-                _inputField(
-                  label: "Number of Items",
-                  icon: Icons.shopping_bag_outlined,
-                  controller: itemsController,
-                  enabled: orderCtrl.isEditing.value,
-                  keyboardType: TextInputType.number,
-                ),
+              SizedBox(height: 16.h),
 
-                const SizedBox(height: 16),
+              _inputField(
+                label: "Total Amount",
+                icon: Icons.currency_rupee,
+                controller: amountController,
+                enabled: orderCtrl.isEditing.value,
+                keyboardType: TextInputType.number,
+              ),
 
-                _inputField(
-                  label: "Total Amount",
-                  icon: Icons.currency_rupee,
-                  controller: amountController,
-                  enabled: orderCtrl.isEditing.value,
-                  keyboardType: TextInputType.number,
-                ),
-
-                const SizedBox(height: 120),
-              ]),
+              SizedBox(height: 120.h),
+            ],
+          ),
         ),
       ),
 
-      bottomNavigationBar: Obx(() {
-        return Padding(
-          padding: const EdgeInsets.all(20),
+      bottomNavigationBar: Obx(
+            () => Padding(
+          padding: EdgeInsets.all(20.w),
           child: _buildBottomButtons(order.id),
-        );
-      }),
+        ),
+      ),
     );
   }
-
 
 
   Widget _buildBottomButtons(String id) {
@@ -111,21 +118,27 @@ class OrderDetailsScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () => orderCtrl.isEditing.value = true,
               style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.blue),
-              child: const Text("Edit Order",
-                  style: TextStyle(fontSize: 16, color: Colors.white)),
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+              ),
+              child: Text(
+                "Edit Order",
+                style: TextStyle(fontSize: 16.sp, color: Colors.white),
+              ),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16.w),
           Expanded(
             child: ElevatedButton(
               onPressed: () => _confirmDelete(id),
               style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.red),
-              child: const Text("Delete",
-                  style: TextStyle(fontSize: 16, color: Colors.white)),
+                backgroundColor: Colors.red,
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+              ),
+              child: Text(
+                "Delete",
+                style: TextStyle(fontSize: 16.sp, color: Colors.white),
+              ),
             ),
           ),
         ],
@@ -138,20 +151,26 @@ class OrderDetailsScreen extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => _updateOrder(id),
             style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Colors.green),
-            child: const Text("Save",
-                style: TextStyle(fontSize: 16, color: Colors.white)),
+              backgroundColor: Colors.green,
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+            ),
+            child: Text(
+              "Save",
+              style: TextStyle(fontSize: 16.sp, color: Colors.white),
+            ),
           ),
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: 16.w),
         Expanded(
           child: OutlinedButton(
-            onPressed: () => _cancelEdit(),
+            onPressed: _cancelEdit,
             style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16)),
-            child:
-            const Text("Cancel", style: TextStyle(fontSize: 16)),
+              padding: EdgeInsets.symmetric(vertical: 16.h),
+            ),
+            child: Text(
+              "Cancel",
+              style: TextStyle(fontSize: 16.sp),
+            ),
           ),
         ),
       ],
@@ -162,30 +181,39 @@ class OrderDetailsScreen extends StatelessWidget {
   void _confirmDelete(String id) {
     Get.dialog(
       AlertDialog(
-        title: const Text("Delete Order"),
-        content: const Text("Are you sure you want to delete this order?"),
+        title: Text("Delete Order", style: TextStyle(fontSize: 18.sp)),
+        content: Text(
+          "Are you sure you want to delete this order?",
+          style: TextStyle(fontSize: 14.sp),
+        ),
         actions: [
           TextButton(
-              onPressed: () => Get.back(),
-              child: const Text("Cancel")),
+            onPressed: Get.back,
+            child: Text("Cancel", style: TextStyle(fontSize: 14.sp)),
+          ),
           TextButton(
             onPressed: () async {
               final success = await orderCtrl.deleteOrder(id);
               if (success) {
                 Get.back();
                 Get.back();
-                Get.snackbar("Deleted", "Order deleted successfully",
-                    backgroundColor: Colors.red, colorText: Colors.white);
+                Get.snackbar(
+                  "Deleted",
+                  "Order deleted successfully",
+                  backgroundColor: Colors.red,
+                  colorText: Colors.white,
+                );
               }
             },
-            child:
-            const Text("Delete", style: TextStyle(color: Colors.red)),
+            child: Text(
+              "Delete",
+              style: TextStyle(fontSize: 14.sp, color: Colors.red),
+            ),
           ),
         ],
       ),
     );
   }
-
 
   Future<void> _updateOrder(String id) async {
     final success = await orderCtrl.updateOrder(id, {
@@ -198,8 +226,12 @@ class OrderDetailsScreen extends StatelessWidget {
 
     if (success) {
       orderCtrl.isEditing.value = false;
-      Get.snackbar("Updated", "Order updated successfully",
-          backgroundColor: Colors.green, colorText: Colors.white);
+      Get.snackbar(
+        "Updated",
+        "Order updated successfully",
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
     }
   }
 
@@ -208,26 +240,35 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
 
+  Widget _sectionTitle(String text) => Text(
+    text,
+    style: TextStyle(
+      fontSize: 18.sp,
+      fontWeight: FontWeight.bold,
+    ),
+  );
 
-  Widget _sectionTitle(String text) => Text(text,
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold));
-
-  Widget _displayField(
-      {required IconData icon,
-        required String label,
-        required String value}) {
+  Widget _displayField({
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
     return _box(
       child: Row(
         children: [
-          Icon(icon, color: Colors.blue),
-          const SizedBox(width: 16),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(label, style: const TextStyle(fontSize: 12)),
-            const SizedBox(height: 4),
-            Text(value,
-                style:
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-          ])
+          Icon(icon, color: Colors.blue, size: 20.sp),
+          SizedBox(width: 16.w),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(label, style: TextStyle(fontSize: 12.sp)),
+              SizedBox(height: 4.h),
+              Text(
+                value,
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -245,10 +286,13 @@ class OrderDetailsScreen extends StatelessWidget {
         controller: controller,
         enabled: enabled,
         keyboardType: keyboardType,
+        style: TextStyle(fontSize: 14.sp),
         decoration: InputDecoration(
-            labelText: label,
-            prefixIcon: Icon(icon, color: Colors.blue),
-            border: InputBorder.none),
+          labelText: label,
+          labelStyle: TextStyle(fontSize: 14.sp),
+          prefixIcon: Icon(icon, color: Colors.blue, size: 20.sp),
+          border: InputBorder.none,
+        ),
       ),
     );
   }
@@ -257,23 +301,21 @@ class OrderDetailsScreen extends StatelessWidget {
     return Obx(() {
       if (!orderCtrl.isEditing.value) {
         return _displayField(
-            icon: Icons.info_outline,
-            label: "Order Status",
-            value: orderCtrl.selectedStatus.value);
+          icon: Icons.info_outline,
+          label: "Order Status",
+          value: orderCtrl.selectedStatus.value,
+        );
       }
-
       return OrderStatusDropdown(
         value: orderCtrl.selectedStatus.value,
-        onChanged: (val) {
-          orderCtrl.selectedStatus.value = val;
-        });
-
+        onChanged: (val) => orderCtrl.selectedStatus.value = val,
+      );
     });
   }
 
   Widget _dateField(BuildContext context) {
-    return Obx(() {
-      return _box(
+    return Obx(
+          () => _box(
         child: InkWell(
           onTap: orderCtrl.isEditing.value
               ? () async {
@@ -290,28 +332,31 @@ class OrderDetailsScreen extends StatelessWidget {
               : null,
           child: Row(
             children: [
-              const Icon(Icons.calendar_today, color: Colors.blue),
-              const SizedBox(width: 16),
+              Icon(Icons.calendar_today, color: Colors.blue, size: 20.sp),
+              SizedBox(width: 16.w),
               Text(
-                  "${orderCtrl.selectedDate.value.day}/${orderCtrl.selectedDate.value.month}/${orderCtrl.selectedDate.value.year}"),
+                "${orderCtrl.selectedDate.value.day}/${orderCtrl.selectedDate.value.month}/${orderCtrl.selectedDate.value.year}",
+                style: TextStyle(fontSize: 14.sp),
+              ),
             ],
           ),
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget _box({required Widget child}) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Get.theme.cardColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 2)),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10.r,
+            offset: Offset(0, 2.h),
+          ),
         ],
       ),
       child: child,

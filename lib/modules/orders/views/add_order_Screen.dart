@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -74,18 +75,18 @@ class _AddOrderPageState extends State<AddOrderScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text(
+        title:  Text(
           "Add New Order",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 22,
+            fontSize: 22.sp,
           ),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding:  EdgeInsets.all(20.r),
           child: Form(
             key: _formKey,
             child: Column(
@@ -94,7 +95,7 @@ class _AddOrderPageState extends State<AddOrderScreen> {
 
 
                 buildSectionTitle('Order Details'),
-                const SizedBox(height: 24),
+                 SizedBox(height: 24.h),
 
                 Obx(() {
                   return TextFormField(
@@ -107,14 +108,14 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                       prefixIcon: Icon(Icons.tag, color: Colors.blue),
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                         borderSide: BorderSide.none,
                       ),
                     ),
                   );
                 }),
 
-                const SizedBox(height: 16),
+                 SizedBox(height: 16.h),
 
                 buildTextField(
                   controller: _customerNameController,
@@ -128,7 +129,7 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                 SizedBox(height: 16.h),
 
                 OrderStatusDropdown(
                   value: _selectedStatus,
@@ -136,10 +137,10 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                     setState(() => _selectedStatus = val);
                   },
                 ),
-                const SizedBox(height: 16),
+                 SizedBox(height: 16.h),
 
                 buildDatePicker(context),
-                const SizedBox(height: 16),
+                 SizedBox(height: 16.h),
 
                 buildTextField(
                   controller: _itemsController,
@@ -157,7 +158,7 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                 SizedBox(height: 16.h),
 
                 buildTextField(
                   controller: _amountController,
@@ -175,12 +176,12 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 32),
+                 SizedBox(height: 32.h),
 
                 Obx((){
                   return SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: 56.h,
                     child: ElevatedButton(
                       onPressed: orderCtrl.isSaving.value ? null : _saveOrder,
                       style: ElevatedButton.styleFrom(
@@ -196,14 +197,14 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                           : Text(
                         'Create Order',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   );
                 }),
-                const SizedBox(height: 20),
+                 SizedBox(height: 20.h),
               ],
             ),
           ),
