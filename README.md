@@ -1,16 +1,48 @@
-# ordermanagement
+# Order Management App
 
-A new Flutter project.
+This is a Flutter-based Order Management application that allows users to manage orders with features like login, viewing orders, editing order details, and deleting orders. Firebase is used for authentication and backend services.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## Setup Instructions
 
-A few resources to get you started if this is your first Flutter project:
+1. Make sure Flutter is installed on your system.
+2. Clone this repository or download the source code.
+3. Open the project folder in VS Code or Android Studio.
+4. Run the following command to get dependencies:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+   flutter pub get
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+5. Make sure you have a Firebase project created and connected to this app.
+    simply create the project and using flutterfire configure with this project and also enable firebase Authentication with email and password sign in method so it will work.
+
+---
+
+## How to Run the App
+
+1. Connect a physical device or start an emulator.
+2. Run the app using:
+
+   flutter run
+
+3. The app will launch and show the login screen.
+4. After login or signup, you can access the orders dashboard.
+
+---
+
+## Backend Used
+
+- **Firebase**
+    - Firebase Authentication for login and registration
+    - Firebase used as backend service for managing user sessions
+
+---
+
+## Notes / Assumptions
+
+- User stays logged in using Firebase authentication persistence.
+- Internet connection is required for authentication.
+- UI is made responsive using `flutter_screenutil`.
+
+---
+

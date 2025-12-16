@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:ordermanagement/modules/auth/auth_controller.dart';
+import 'package:ordermanagement/utils/constants/colors.dart';
 
 import '../../data/models/orderModel.dart';
 import '../../utils/routes/app_routes.dart';
@@ -16,6 +18,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final OrdersController orderCtrl = Get.put(OrdersController());
+  final AuthController authController=Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     final orders = List.generate(
@@ -29,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'items': (index % 5) + 1,
       },
     );
-    final OrdersController orderCtrl = Get.put(OrdersController());
+
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.filter_alt, color: Colors.blue, size: 28.sp),
+            icon: Icon(Icons.filter_alt, color: AppColors.buttonPrimary, size: 28.sp),
             onPressed: () {
               showModalBottomSheet(
                 context: context,
@@ -57,9 +61,44 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           IconButton(
-            icon: Icon(Icons.add_circle, color: Colors.blue, size: 28.sp),
+            icon: Icon(Icons.add_circle, color: AppColors.buttonPrimary, size: 28.sp),
 
             onPressed: () => Get.toNamed(Routes.addOrders),
+          ),
+          PopupMenuButton<String>(
+            iconColor: AppColors.buttonPrimary,
+            onSelected: (value) {
+              if (value == 'logout') {
+                Get.dialog(
+                  AlertDialog(
+                    title: const Text("Logout"),
+                    content: const Text("Are you sure you want to logout?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Get.back(),
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                          authController.logout();
+                        },
+                        child: const Text(
+                          "Logout",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+            itemBuilder: (context) => const [
+              PopupMenuItem(
+                value: 'logout',
+                child: Text('Logout'),
+              ),
+            ],
           ),
         ],
       ),

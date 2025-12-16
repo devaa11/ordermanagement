@@ -67,4 +67,22 @@ class AuthController extends GetxController{
     }
   }
 
+  Future<void> logout() async {
+    try {
+      isLoading.value = true;
+      await repo.logout();
+
+      Get.offAllNamed(Routes.login);
+
+    } catch (e) {
+      Loaders.errorSnackBar(
+        title: "Error",
+        message: "Failed to logout. Please try again.",
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+
 }
