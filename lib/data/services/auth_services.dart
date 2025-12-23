@@ -14,7 +14,7 @@ class AuthService {
     return result.user;
   }
 
-  Future<User?> register(String email, String password) async {
+  Future<User?> register(String email, String password,{String? name}) async {
     final result = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -26,6 +26,7 @@ class AuthService {
       await _db.collection('users').doc(user.uid).set({
         'uid': user.uid,
         'email': user.email,
+        'name': name ?? '',
         'createdAt': FieldValue.serverTimestamp(),
       });
     }

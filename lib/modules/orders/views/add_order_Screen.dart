@@ -181,7 +181,7 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                 Obx((){
                   return SizedBox(
                     width: double.infinity,
-                    height: 56.h,
+                    height: 45.h,
                     child: ElevatedButton(
                       onPressed: orderCtrl.isSaving.value ? null : _saveOrder,
                       style: ElevatedButton.styleFrom(
