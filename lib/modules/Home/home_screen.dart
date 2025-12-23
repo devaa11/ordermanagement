@@ -22,17 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final AuthController authController=Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
-    final orders = List.generate(
-      10,
-          (index) => {
-        'id': 'ORD${1000 + index}',
-        'customerName': ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Williams'][index % 4],
-        'status': ['Pending', 'Processing', 'Delivered', 'Cancelled'][index % 4],
-        'amount': (50 + (index * 15.5)).toStringAsFixed(2),
-        'date': '${15 - (index % 15)} Dec 2024',
-        'items': (index % 5) + 1,
-      },
-    );
+
 
 
     return Scaffold(
@@ -137,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (list.isEmpty) {
                     return const Center(
                       child: Text(
-                        "No matching orders",
+                        "No Orders Found",
                         style: TextStyle(fontSize: 16),
                       ),
                     );

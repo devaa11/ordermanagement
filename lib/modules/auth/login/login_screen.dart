@@ -104,7 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
 
                           },
-                          child: _authController.isLoading.value? CircularProgressIndicator(): Text("Login")),
+                          child: _authController.isLoading.value?
+                          CircularProgressIndicator():
+                          Text("Login")),
                     );
 
                   }),
