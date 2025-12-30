@@ -19,22 +19,18 @@ class _AddOrderPageState extends State<AddOrderScreen> {
   final _orderIdController = TextEditingController();
   final _customerNameController = TextEditingController();
   final _productIdController = TextEditingController();
-  final _amountController = TextEditingController();
-  final _itemsController = TextEditingController();
   final OrdersController orderCtrl = Get.put(OrdersController());
 
 
   String _selectedStatus = 'Pending';
   DateTime _selectedDate = DateTime.now();
 
-  final List<String> _statusOptions = ['Pending', 'Processing', 'Delivered', 'Cancelled'];
 
   @override
   void dispose() {
     _orderIdController.dispose();
     _customerNameController.dispose();
-    _amountController.dispose();
-    _itemsController.dispose();
+    orderCtrl.resetProduct();
     super.dispose();
   }
 
@@ -58,8 +54,8 @@ class _AddOrderPageState extends State<AddOrderScreen> {
 
       final isSuccess = await ctrl.addOrder(
         customerName: _customerNameController.text,
-        items: int.parse(_itemsController.text),
-        amount: double.parse(_amountController.text),
+        items: orderCtrl.quantity.value,
+        amount: orderCtrl.calculatedTotal.value,
         status: _selectedStatus,
         date: _selectedDate,
       );
@@ -141,27 +137,29 @@ class _AddOrderPageState extends State<AddOrderScreen> {
 
                 Obx((){
                   if(orderCtrl.isProductLoading.value){
-                    return SizedBox.shrink();
+                    return  Center(child: const CircularProgressIndicator());
                   }
 
                   final product= orderCtrl.selectedProduct.value;
 
                   if(product ==null){
-                    return Text("No product found");
+                    return SizedBox();
                   }
                   return    Column(
                       children:[
 
                         Container(
+
                             child: Column(
 
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children:[
-                                  Text("Prodcut Name: ${product.productName}"),
-                                  Text("Description: ${product.description}"),
-                                  Text("type: ${product.type}"),
+                                  Text("Prodcut Name: ${product.pName}"),
+                                  Text("Description: ${product.pDesc}"),
+                                  Text("Type: ${product.pType}"),
+                                  Text("Amount : ${product.pAmount}"),
                                 ]
-                            )
+                            ),
                         ),
                         SizedBox(height: 16.h),
 

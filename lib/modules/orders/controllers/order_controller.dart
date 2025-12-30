@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:ordermanagement/data/models/productModel.dart';
 import 'package:ordermanagement/data/repositories/product_repository.dart';
@@ -22,16 +24,24 @@ class OrdersController extends GetxController {
   var maxAmount = 999999.0.obs;
   var startDate = Rxn<DateTime>();
   var endDate = Rxn<DateTime>();
-  var selectedProduct = Rxn<Productmodel>();
+  var selectedProduct = Rxn<ProductModel>();
   var quantity = 1.obs;
   var calculatedTotal = 0.0.obs;
   var isProductLoading = false.obs;
 
+  Timer? _debounce;
   @override
   void onInit() {
     super.onInit();
     loadOrders();
     generateOrderId();
+  }
+
+  @override
+  void onClose() {
+    _debounce?.cancel();
+    // TODO: implement onClose
+    super.onClose();
   }
 
   Future<void> loadOrders() async {
@@ -155,15 +165,27 @@ class OrdersController extends GetxController {
     try {
       isProductLoading.value = true;
 
-      final product = await productrepo.fetchById(id);
+      if(_debounce?.isActive ?? false)
+        _debounce!.cancel();
 
-      if (product != null) {
-        selectedProduct.value = product;
-        calculateTotal();
-      } else {
-        selectedProduct.value = null;
-        calculatedTotal.value = 0;
-      }
+      _debounce=Timer(Duration(milliseconds: 300), () async{
+        if(id.isEmpty){
+          resetProduct();
+          return;
+        }
+
+        final product = await productrepo.getProductById(id);
+
+        if (product != null) {
+          selectedProduct.value = product;
+          calculateTotal();
+        } else {
+          Loaders.errorSnackBar(title: "Error",message: "No Product Found");
+          resetProduct();
+        }
+      },);
+
+
     } catch (e) {
       print(e);
     } finally {
@@ -174,7 +196,7 @@ class OrdersController extends GetxController {
   void calculateTotal() {
     if (selectedProduct.value != null) {
       calculatedTotal.value =
-          selectedProduct.value!.amount * quantity.value;
+          selectedProduct.value!.pAmount! * quantity.value;
     }
   }
   void updateQuantity(int value) {
@@ -182,5 +204,10 @@ class OrdersController extends GetxController {
     calculateTotal();
   }
 
+  void resetProduct(){
+    selectedProduct.value=null;
+    calculatedTotal.value=0.0;
+    quantity.value=1;
+  }
 
 }

@@ -7,12 +7,16 @@ import '../services/prodcut_service.dart';
 class ProductRepository {
   final ProductService service = ProductService();
 
+  Future<ProductModel?> addProduct(ProductModel model)async{
+    return service.addProduct(model);
+  }
 
-  Future<Productmodel?> createProduct(Productmodel model) =>
-      service.createProduct(model);
-  Future<Productmodel?> fetchById(String Id) =>
-      service.fetchOrderById(Id);
+  Future<List<ProductModel>> loadAllProduct()async{
+    return service.loadAllProducts();
+  }
 
-
+  Future<ProductModel?>getProductById(String id)async{
+    return service.getProductById(id);
+  }
 
 }

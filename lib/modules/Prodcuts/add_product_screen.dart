@@ -13,25 +13,54 @@ class AddProductScreen extends StatefulWidget {
 }
 
 class _AddProductScreenState extends State<AddProductScreen> {
-  final productIdController =TextEditingController();
-  final productDescriptionController =TextEditingController();
-  final amountController =TextEditingController();
-  final ProductController productController=Get.put(ProductController());
+  final pNameController = TextEditingController();
+  final pDescController = TextEditingController();
+  final amountController = TextEditingController();
+  final pTypeController = TextEditingController();
+  final ProductController productController = Get.put(ProductController());
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    productController.loadAllProduct();
+  }
+
+  void _clearFields(){
+    pNameController.clear();
+    pDescController.clear();
+    amountController.clear();
+    pTypeController.clear();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Product'),
-      ),
+      appBar: AppBar(title: const Text('Add Product')),
       body: SingleChildScrollView(
         child: Padding(
-          padding:  EdgeInsets.all(20.r),
+          padding: EdgeInsets.all(20.r),
           child: Column(
-            spacing:20.h,
+            spacing: 20.h,
             children: [
+              TextFormField(
+                controller: pNameController,
+                decoration: InputDecoration(
+                  labelText: 'Product Name',
+                  prefixIcon: Icon(Icons.description, color: Colors.blue),
+                  filled: true,
+
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
 
               TextFormField(
-                controller: productDescriptionController,
+                controller: pDescController,
                 maxLines: 3,
                 decoration: InputDecoration(
                   labelText: 'Product Description',
@@ -46,7 +75,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ),
 
               TextFormField(
-                controller: amountController,
+                controller: pTypeController,
 
                 decoration: InputDecoration(
                   labelText: 'Type',
@@ -60,7 +89,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
               ),
 
               TextFormField(
-
                 controller: amountController,
 
                 decoration: InputDecoration(
@@ -74,19 +102,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
               ),
 
-              Obx((){
+              Obx(() {
                 return SizedBox(
                   width: double.infinity,
                   height: 45.h,
                   child: ElevatedButton(
-                    onPressed: (){
-                      final  data ={
-                        'productName': productIdController.text,
-                        'description': productDescriptionController.text,
-                        'type': amountController.text,
-                        'amount': double.parse(amountController.text),
-                      };
-                      // productController.createProdcut(data);
+                    onPressed: () {
+                      productController.createProdcut(
+                        pNameController.text,
+                        pDescController.text,
+                        amountController.text,
+                        pTypeController.text,
+                      );
+
+                      _clearFields();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -96,31 +125,45 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
-                    child: productController.isLoading.value ?CircularProgressIndicator() :
-                    Text(
-                      'Create Product',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: productController.isProductAdded.value
+                        ? CircularProgressIndicator()
+                        : Text(
+                            'Create Product',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 );
-
               }),
 
+              Obx(()=>Column(
+                children: productController.product.map((e)=>
+               Row(
+                 spacing: 30.w,
+                 children: [
+                   Text(e.id ?? ""),
+                   Text(e.pName ?? ""),
+                   Text(e.pAmount.toString())
+                   
+                 ],
+               )
+                ).toList(),
+
+
+              )),
 
             ],
           ),
         ),
-      )
+      ),
     );
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
 
+    super.dispose();
   }
 }

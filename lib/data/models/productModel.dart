@@ -1,34 +1,45 @@
-class Productmodel {
-  final String id;
-  final String productName;
-  final double amount;
-  final String description;
-  final String type;
+// To parse this JSON data, do
+//
+//     final productModel = productModelFromJson(jsonString);
 
-  Productmodel({
-    required this.id,
-    required this.productName,
-    required this.description,
-    required this.amount,
-    required this.type
+import 'dart:convert';
+
+List<ProductModel> productModelFromJson(String str) => List<ProductModel>.from(json.decode(str).map((x) => ProductModel.fromJson(x)));
+
+String productModelToJson(List<ProductModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class ProductModel {
+  DateTime? createdAt;
+  String? pName;
+  String? pDesc;
+  double? pAmount;
+  String? pType;
+  String? id;
+
+  ProductModel({
+    this.createdAt,
+    this.pName,
+    this.pDesc,
+    this.pAmount,
+    this.pType,
+    this.id,
   });
 
-  factory Productmodel.fromMap(Map<String, dynamic> map, String id) {
-    return Productmodel(
-      id: id,
-      productName: map['productName'],
-      description: map['description'],
-      amount: (map['amount'] as num).toDouble(),
-      type: map['type'],
-    );
-  }
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+    createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+    pName: json["p_name"],
+    pDesc: json["p_desc"],
+    pAmount: double.parse(json["p_amount"].toString()),
+    pType: json["p_type"],
+    id: json["id"],
+  );
 
-  Map<String, dynamic> toMap() {
-    return {
-      "productName": productName,
-      "amount": amount,
-      "type": type,
-      "description" :description
-    };
-  }
+  Map<String, dynamic> toJson() => {
+    "createdAt": createdAt?.toIso8601String(),
+    "p_name": pName,
+    "p_desc": pDesc,
+    "p_amount": pAmount,
+    "p_type": pType,
+    "id": id,
+  };
 }
