@@ -18,6 +18,7 @@ class _AddOrderPageState extends State<AddOrderScreen> {
   final _formKey = GlobalKey<FormState>();
   final _orderIdController = TextEditingController();
   final _customerNameController = TextEditingController();
+  final _productIdController = TextEditingController();
   final _amountController = TextEditingController();
   final _itemsController = TextEditingController();
   final OrdersController orderCtrl = Get.put(OrdersController());
@@ -117,6 +118,59 @@ class _AddOrderPageState extends State<AddOrderScreen> {
 
                  SizedBox(height: 16.h),
 
+              TextFormField(
+
+                controller: _productIdController,
+                onChanged: (value) {
+                  orderCtrl.getProductId(value.trim());
+                },
+
+
+                decoration: InputDecoration(
+                  labelText: 'Product ID',
+                  prefixIcon: Icon(Icons.tag, color: Colors.blue),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+
+                SizedBox(height: 16.h),
+
+                Obx((){
+                  if(orderCtrl.isProductLoading.value){
+                    return SizedBox.shrink();
+                  }
+
+                  final product= orderCtrl.selectedProduct.value;
+
+                  if(product ==null){
+                    return Text("No product found");
+                  }
+                  return    Column(
+                      children:[
+
+                        Container(
+                            child: Column(
+
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children:[
+                                  Text("Prodcut Name: ${product.productName}"),
+                                  Text("Description: ${product.description}"),
+                                  Text("type: ${product.type}"),
+                                ]
+                            )
+                        ),
+                        SizedBox(height: 16.h),
+
+                      ]
+                  );
+
+                }),
+
+
                 buildTextField(
                   controller: _customerNameController,
                   label: 'Customer Name',
@@ -129,6 +183,8 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                     return null;
                   },
                 ),
+
+
                  SizedBox(height: 16.h),
 
                 OrderStatusDropdown(
@@ -142,40 +198,33 @@ class _AddOrderPageState extends State<AddOrderScreen> {
                 buildDatePicker(context),
                  SizedBox(height: 16.h),
 
-                buildTextField(
-                  controller: _itemsController,
-                  label: 'Number of Items',
-                  hint: 'Enter number of items',
-                  icon: Icons.shopping_bag_outlined,
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter number of items';
-                    }
-                    if (int.tryParse(value) == null) {
-                      return 'Please enter a valid number';
-                    }
-                    return null;
-                  },
-                ),
-                 SizedBox(height: 16.h),
+           TextFormField(
+             keyboardType: TextInputType.number,
+             decoration:  InputDecoration(
+               labelText: "Quantity",
 
-                buildTextField(
-                  controller: _amountController,
-                  label: 'Total Amount',
-                  hint: 'Enter total amount',
-                  icon: Icons.attach_money,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter total amount';
-                    }
-                    if (double.tryParse(value) == null) {
-                      return 'Please enter a valid amount';
-                    }
-                    return null;
-                  },
-                ),
+             ),
+             onChanged: (value) {
+               orderCtrl.updateQuantity(int.tryParse(value) ?? 1);
+             },
+
+           ),
+                 SizedBox(height: 16.h),
+                 Obx((){
+                   return TextFormField(
+                     readOnly: true,
+                     decoration:  InputDecoration(
+                       labelText: "Total Amount",
+
+                     ),
+                     controller: TextEditingController(
+                         text: orderCtrl.calculatedTotal.value.toString()
+                     ),
+                   );
+                 }),
+
+
+
                  SizedBox(height: 32.h),
 
                 Obx((){
@@ -223,7 +272,7 @@ class _AddOrderPageState extends State<AddOrderScreen> {
     );
   }
 
-  Widget buildTextField({
+  Widget  buildTextField({
     required TextEditingController controller,
     required String label,
     required String hint,

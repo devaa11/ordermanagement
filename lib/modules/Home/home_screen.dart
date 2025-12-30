@@ -81,6 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 );
+              } else if(value == "add_products"){
+                Get.toNamed(Routes.addProducts);
               }
             },
             itemBuilder: (context) => const [
@@ -88,6 +90,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 value: 'logout',
                 child: Text('Logout'),
               ),
+              PopupMenuItem(
+                  value: 'add_products',
+                  child: Text("Add Products"))
             ],
           ),
         ],

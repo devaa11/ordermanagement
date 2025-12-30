@@ -8,5 +8,6 @@ abstract class Routes {
   static const signup='/signup';
   static const addOrders='/addOrder';
   static const orderdetails='/orderDetails';
+  static const addProducts='/addProducts';
 
 }

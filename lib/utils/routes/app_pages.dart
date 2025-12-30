@@ -1,6 +1,7 @@
 
 import 'package:get/get.dart';
 import 'package:ordermanagement/modules/Home/home_screen.dart';
+import 'package:ordermanagement/modules/Prodcuts/add_product_screen.dart';
 import 'package:ordermanagement/modules/auth/signup/signup_screen.dart';
 import 'package:ordermanagement/modules/orders/views/add_order_Screen.dart';
 import 'package:ordermanagement/modules/orders/views/order_details_screen.dart';
@@ -40,6 +41,13 @@ class AppPages {
     GetPage(
       name: Routes.orderdetails,
       page: () => OrderDetailsScreen(),
+      transition: Transition.rightToLeft,
+      transitionDuration: Duration(milliseconds: 300),
+    ),
+
+    GetPage(
+      name: Routes.addProducts,
+      page: () => AddProductScreen(),
       transition: Transition.rightToLeft,
       transitionDuration: Duration(milliseconds: 300),
     ),

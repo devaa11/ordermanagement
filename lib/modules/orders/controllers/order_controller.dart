@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
+import 'package:ordermanagement/data/models/productModel.dart';
+import 'package:ordermanagement/data/repositories/product_repository.dart';
 import 'package:ordermanagement/utils/helpers/loaders.dart';
 import '../../../data/models/orderModel.dart';
 import '../../../data/repositories/order_repository.dart';
 
 class OrdersController extends GetxController {
   final repo = OrderRepository();
+  final productrepo=ProductRepository();
 
   var orders = <OrderModel>[].obs;
   var isLoading = false.obs;
@@ -19,6 +22,10 @@ class OrdersController extends GetxController {
   var maxAmount = 999999.0.obs;
   var startDate = Rxn<DateTime>();
   var endDate = Rxn<DateTime>();
+  var selectedProduct = Rxn<Productmodel>();
+  var quantity = 1.obs;
+  var calculatedTotal = 0.0.obs;
+  var isProductLoading = false.obs;
 
   @override
   void onInit() {
@@ -142,6 +149,37 @@ class OrdersController extends GetxController {
     maxAmount.value = 999999.0;
     startDate.value = null;
     endDate.value = null;
+  }
+
+  Future<void> getProductId(String id) async {
+    try {
+      isProductLoading.value = true;
+
+      final product = await productrepo.fetchById(id);
+
+      if (product != null) {
+        selectedProduct.value = product;
+        calculateTotal();
+      } else {
+        selectedProduct.value = null;
+        calculatedTotal.value = 0;
+      }
+    } catch (e) {
+      print(e);
+    } finally {
+      isProductLoading.value = false;
+    }
+  }
+
+  void calculateTotal() {
+    if (selectedProduct.value != null) {
+      calculatedTotal.value =
+          selectedProduct.value!.amount * quantity.value;
+    }
+  }
+  void updateQuantity(int value) {
+    quantity.value = value;
+    calculateTotal();
   }
 
 
